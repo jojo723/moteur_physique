@@ -1,4 +1,4 @@
-# Install script for directory: /home/florent/workspace/MoteurPhysique/third-party/glew-1.10.0
+# Install script for directory: /home/jojo/Documents/MoteurPhysique/third-party/glew-1.10.0
 
 # Set the install prefix
 IF(NOT DEFINED CMAKE_INSTALL_PREFIX)

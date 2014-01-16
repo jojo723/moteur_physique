@@ -426,16 +426,6 @@ core/setup.hpp
 ./core/_swizzle.hpp
 ../third-party/glm-0.9.4.6/glm/gtc/.././core/_swizzle.hpp
 
-../third-party/glm-0.9.4.6/glm/gtc/../gtc/../gtc/constants.hpp
-../glm.hpp
-../third-party/glm-0.9.4.6/glm/gtc/../gtc/../gtc/../glm.hpp
-../gtc/half_float.hpp
-../third-party/glm-0.9.4.6/glm/gtc/../gtc/../gtc/../gtc/half_float.hpp
-constants.inl
-../third-party/glm-0.9.4.6/glm/gtc/../gtc/../gtc/constants.inl
-
-../third-party/glm-0.9.4.6/glm/gtc/../gtc/../gtc/constants.inl
-
 ../third-party/glm-0.9.4.6/glm/gtc/../gtc/half_float.hpp
 ../glm.hpp
 ../third-party/glm-0.9.4.6/glm/gtc/../gtc/../glm.hpp
@@ -444,45 +434,49 @@ half_float.inl
 
 ../third-party/glm-0.9.4.6/glm/gtc/../gtc/half_float.inl
 
-../third-party/glm-0.9.4.6/glm/gtc/../gtc/quaternion.hpp
+../third-party/glm-0.9.4.6/glm/gtc/matrix_transform.hpp
 ../glm.hpp
-../third-party/glm-0.9.4.6/glm/gtc/../gtc/../glm.hpp
-../gtc/half_float.hpp
-../third-party/glm-0.9.4.6/glm/gtc/../gtc/../gtc/half_float.hpp
-../gtc/constants.hpp
-../third-party/glm-0.9.4.6/glm/gtc/../gtc/../gtc/constants.hpp
-quaternion.inl
-../third-party/glm-0.9.4.6/glm/gtc/../gtc/quaternion.inl
+../third-party/glm-0.9.4.6/glm/gtc/../glm.hpp
+matrix_transform.inl
+../third-party/glm-0.9.4.6/glm/gtc/matrix_transform.inl
 
-../third-party/glm-0.9.4.6/glm/gtc/../gtc/quaternion.inl
-limits
--
+../third-party/glm-0.9.4.6/glm/gtc/matrix_transform.inl
 
-../third-party/glm-0.9.4.6/glm/gtc/type_ptr.hpp
+../third-party/glm-0.9.4.6/glm/gtc/random.hpp
 ../glm.hpp
 ../third-party/glm-0.9.4.6/glm/gtc/../glm.hpp
 ../gtc/half_float.hpp
 ../third-party/glm-0.9.4.6/glm/gtc/../gtc/half_float.hpp
-../gtc/quaternion.hpp
-../third-party/glm-0.9.4.6/glm/gtc/../gtc/quaternion.hpp
-cstring
+random.inl
+../third-party/glm-0.9.4.6/glm/gtc/random.inl
+
+../third-party/glm-0.9.4.6/glm/gtc/random.inl
+ctime
 -
-type_ptr.inl
-../third-party/glm-0.9.4.6/glm/gtc/type_ptr.inl
+cassert
+-
 
-../third-party/glm-0.9.4.6/glm/gtc/type_ptr.inl
-
-/home/florent/workspace/MoteurPhysique/src/renderer/BallRenderer3D.cpp
-BallRenderer3D.hpp
-/home/florent/workspace/MoteurPhysique/src/renderer/BallRenderer3D.hpp
-GLtools.hpp
-/home/florent/workspace/MoteurPhysique/src/renderer/GLtools.hpp
+/home/jojo/Documents/MoteurPhysique/src/main.cpp
 iostream
 -
-glm/gtc/type_ptr.hpp
+cstdlib
+-
+glm/glm.hpp
+-
+glm/gtc/random.hpp
+-
+glm/gtc/matrix_transform.hpp
+-
+renderer/WindowManager.hpp
+/home/jojo/Documents/MoteurPhysique/src/renderer/WindowManager.hpp
+renderer/BallRenderer3D.hpp
+/home/jojo/Documents/MoteurPhysique/src/renderer/BallRenderer3D.hpp
+renderer/TrackballCamera.hpp
+/home/jojo/Documents/MoteurPhysique/src/renderer/TrackballCamera.hpp
+vector
 -
 
-/home/florent/workspace/MoteurPhysique/src/renderer/BallRenderer3D.hpp
+/home/jojo/Documents/MoteurPhysique/src/renderer/BallRenderer3D.hpp
 GL/glew.h
 -
 glm/glm.hpp
@@ -490,7 +484,13 @@ glm/glm.hpp
 vector
 -
 
-/home/florent/workspace/MoteurPhysique/src/renderer/GLtools.hpp
-GL/glew.h
+/home/jojo/Documents/MoteurPhysique/src/renderer/TrackballCamera.hpp
+glm/glm.hpp
+-
+glm/gtc/matrix_transform.hpp
+-
+
+/home/jojo/Documents/MoteurPhysique/src/renderer/WindowManager.hpp
+SDL/SDL.h
 -
 
