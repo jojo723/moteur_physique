@@ -10,6 +10,7 @@ class BallRenderer3D {
 	struct Vertex {
 		glm::vec3 position;
 		glm::vec3 normal;
+		
 	};
 public:
 	BallRenderer3D(int nbPoints);
@@ -47,6 +48,7 @@ private:
     uint32_t m_nIndexCount;
 
     std::vector<Vertex> m_VertexBuffer;
+    int nbPoints;
 };
 
 }

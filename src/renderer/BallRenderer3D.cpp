@@ -39,10 +39,12 @@ void main() {
 		);
 
 BallRenderer3D::BallRenderer3D(int nbPoints):
-    						m_ProgramID(buildProgram(VERTEX_SHADER, FRAGMENT_SHADER)),
-    						m_ProjMatrix(1.f), m_ViewMatrix(1.f),
-    						m_nIndexCount(0),
-    						m_VertexBuffer(nbPoints) {
+	m_ProgramID(buildProgram(VERTEX_SHADER, FRAGMENT_SHADER)),
+	m_ProjMatrix(1.f), m_ViewMatrix(1.f),
+	m_nIndexCount(0),
+	m_VertexBuffer( (nbPoints-1)*(2*nbPoints)+3) {
+	
+	this->nbPoints=nbPoints;
 
 	// Création du VBO
 	glGenBuffers(1, &m_VBOID);
@@ -51,48 +53,37 @@ BallRenderer3D::BallRenderer3D(int nbPoints):
 	glGenBuffers(1, &m_IBOID);
 	std::vector<GLuint> indexBuffer;
 
-	for(int i=1; i<=8 ; ++i){
+	for(int i=0; i<2*nbPoints ; ++i){
 		indexBuffer.push_back(1);
-		indexBuffer.push_back(i*3);
-		indexBuffer.push_back( ((i-1)*3 < 3) ? 24 : ((i-1)*3) );
+		indexBuffer.push_back(3+i*(nbPoints-1));
+		indexBuffer.push_back(3+(i+1)*(nbPoints-1) > 3+(nbPoints-1)*(2*nbPoints-1) ? 3 : (3+(i+1)*(nbPoints-1)) );
 	}
-	for(int i=1; i<=8 ; ++i){
+	for(int i=0; i<2*nbPoints ; ++i){
 		indexBuffer.push_back(2);
-		indexBuffer.push_back(2+(i*3));
-		indexBuffer.push_back( (2+(i+1)*3>26 ) ? 5 : (2+(i+1)*3) );
+		indexBuffer.push_back(3+(nbPoints-2)+(i*(nbPoints-1)));
+		indexBuffer.push_back((3+(nbPoints-2)+(i+1)*(nbPoints-1)>(nbPoints-1)*(2*nbPoints-1)+2+(nbPoints-1)) ? 2+(nbPoints-1) : (3+(nbPoints-2)+(i+1)*(nbPoints-1)) );
 	}
-	for(int i=1; i<8 ; ++i){
-		indexBuffer.push_back(i*3);
-		indexBuffer.push_back((i+1)*3);
-		indexBuffer.push_back(1+(i*3));
+	for(int i=0; i<2*nbPoints-1; ++i){
+		for(int j=0; j<nbPoints-2; ++j){
+			indexBuffer.push_back(3+j+i*(nbPoints-1));
+			indexBuffer.push_back(3+j+(i+1)*(nbPoints-1));
+			indexBuffer.push_back(4+j+(i*(nbPoints-1)));
 
-		indexBuffer.push_back(1+(i*3));
-		indexBuffer.push_back((i+1)*3);
-		indexBuffer.push_back(1+((i+1)*3));
-
-		indexBuffer.push_back(2+i*3);
-		indexBuffer.push_back(2+(i+1)*3);
-		indexBuffer.push_back(1+(i*3));
-
-		indexBuffer.push_back(1+(i*3));
-		indexBuffer.push_back(1+((i+1)*3));
-		indexBuffer.push_back(2+(i+1)*3);
+			indexBuffer.push_back(4+j+(i*(nbPoints-1)));
+			indexBuffer.push_back(4+j+((i+1)*(nbPoints-1)));
+			indexBuffer.push_back(3+j+(i+1)*(nbPoints-1));
+		}
 	}
-	indexBuffer.push_back(24);
-	indexBuffer.push_back(3);
-	indexBuffer.push_back(25);
 
-	indexBuffer.push_back(25);
-	indexBuffer.push_back(4);
-	indexBuffer.push_back(3);
+	for(int j=0; j<nbPoints-2 ; ++j){
+		indexBuffer.push_back(3+j+(nbPoints-1)*(2*nbPoints-1));
+		indexBuffer.push_back(3+j);
+		indexBuffer.push_back(4+j+(nbPoints-1)*(2*nbPoints-1));
 
-	indexBuffer.push_back(25);
-	indexBuffer.push_back(26);
-	indexBuffer.push_back(5);
-
-	indexBuffer.push_back(4);
-	indexBuffer.push_back(5);
-	indexBuffer.push_back(25);
+		indexBuffer.push_back(4+j+(nbPoints-1)*(2*nbPoints-1));
+		indexBuffer.push_back(4+j);
+		indexBuffer.push_back(3+j);
+	}
 
 	m_nIndexCount = indexBuffer.size();
 
@@ -131,7 +122,7 @@ void BallRenderer3D::drawGrid(const glm::vec3* positionArray, bool wireframe) {
 
 	glBindBuffer(GL_ARRAY_BUFFER, m_VBOID);
 
-	for(int i = 1; i < 27; ++i) {
+	for(int i = 1; i < 3+(nbPoints-1)*(2*nbPoints); ++i) {
 		m_VertexBuffer[i].position = positionArray[i];
 
 		glm::vec3 N(0.f);
@@ -139,9 +130,9 @@ void BallRenderer3D::drawGrid(const glm::vec3* positionArray, bool wireframe) {
 		glm::vec3 A = positionArray[i];
 
 		if(i == 1){
-			for(int j=1; j < 8; ++j){
-				glm::vec3 B = positionArray[j*3];
-				glm::vec3 C = positionArray[((j+1)*3) > 24 ? 3 : ((j+1)*3)];
+			for(int j=0; j < 2*nbPoints; ++j){
+				glm::vec3 B = positionArray[3+j*(nbPoints-1)];
+				glm::vec3 C = positionArray[(3+(j+1)*(nbPoints-1)) > 3+(nbPoints-1)*(2*nbPoints-1)? 3 : (3+(j+1)*(nbPoints-1))];
 
 				glm::vec3 BxC = glm::cross(B - A, C - A);
 				float l = glm::length(BxC);
@@ -153,9 +144,9 @@ void BallRenderer3D::drawGrid(const glm::vec3* positionArray, bool wireframe) {
 		}
 
 		else if(i == 2){
-			for(int j=1; j < 8; ++j){
-				glm::vec3 B = positionArray[2+(j)*3];
-				glm::vec3 C = positionArray[ (2+(j+1)*3) > 26 ? 5 :2+(j+1)*3 ];
+			for(int j=1; j < 2*nbPoints; ++j){
+				glm::vec3 B = positionArray[(nbPoints-2)+(j)*(nbPoints-1)];
+				glm::vec3 C = positionArray[ ((nbPoints-2)+(j+1)*(nbPoints-1)) > (nbPoints-2)+(nbPoints-1)*(2*nbPoints) ? 2+(nbPoints-1) :(nbPoints-2)+(j+1)*(nbPoints-1)];
 
 				glm::vec3 BxC = glm::cross(B - A, C - A);
 				float l = glm::length(BxC);
@@ -166,7 +157,7 @@ void BallRenderer3D::drawGrid(const glm::vec3* positionArray, bool wireframe) {
 			}
 		}
 
-		else if (i%3 == 3){
+		else if ((i-3)%(nbPoints-1) == 0){
 			float l = 0.f;
 			glm::vec3 B(0.f);
 			glm::vec3 C(0.f);
@@ -174,7 +165,7 @@ void BallRenderer3D::drawGrid(const glm::vec3* positionArray, bool wireframe) {
 
 			// Triangle au dessus droite
 			B = positionArray[1];
-			C = positionArray[ ((i+1)*3) > 24 ? 3 : ((i+1)*3) ];
+			C = positionArray[ ((i+1)*(nbPoints-1)) > (nbPoints-1)*(2*nbPoints-1)+3 ? 3 : ((i+1)*(nbPoints-1)) ];
 
 			BxC = glm::cross(B - A, C - A);
 			l = glm::length(BxC);
@@ -184,110 +175,7 @@ void BallRenderer3D::drawGrid(const glm::vec3* positionArray, bool wireframe) {
 			}
 
 			// triangle dessous droite
-			B = positionArray[((i+1)*3) > 24 ? 3 : ((i+1)*3)];
-			C = positionArray[(i*3)+1];
-
-			BxC = glm::cross(B - A, C - A);
-			l = glm::length(BxC);
-
-			if(l > 0.0001f) {
-				N += BxC / l;
-			}
-
-			// triangle dessous gauche
-			B = positionArray[(i*3)+1];
-			C = positionArray[(i-1)*3 < 3 ? 24 : (i-1)*3];
-
-			BxC = glm::cross(B - A, C - A);
-			l = glm::length(BxC);
-
-			if(l > 0.0001f) {
-				N += BxC / l;
-			}
-
-			// triangle dessus gauche
-			B = positionArray[(i-1)*3 < 3 ? 24 : (i-1)*3];
-			C = positionArray[1];
-
-			BxC = glm::cross(B - A, C - A);
-			l = glm::length(BxC);
-
-			if(l > 0.0001f) {
-				N += BxC / l;
-			}
-
-		}
-
-		else if((i-2)%3 == 0){
-			float l = 0.f;
-			glm::vec3 B(0.f);
-			glm::vec3 C(0.f);
-			glm::vec3 BxC(0.f);
-
-			// Triangle au dessus droite
-			B = positionArray[i-1];
-			C = positionArray[ ((i+1)*3) > 26 ? 5 : ((i+1)*3) ];
-
-			BxC = glm::cross(B - A, C - A);
-			l = glm::length(BxC);
-
-			if(l > 0.0001f) {
-				N += BxC / l;
-			}
-
-			// triangle dessous droite
-			B = positionArray[((i+1)*3) > 26 ? 5 : ((i+1)*3)];
-			C = positionArray[2];
-
-			BxC = glm::cross(B - A, C - A);
-			l = glm::length(BxC);
-
-			if(l > 0.0001f) {
-				N += BxC / l;
-			}
-
-			// triangle dessous gauche
-			B = positionArray[2];
-			C = positionArray[(i-1)*3 < 5 ? 26 : (i-1)*3];
-
-			BxC = glm::cross(B - A, C - A);
-			l = glm::length(BxC);
-
-			if(l > 0.0001f) {
-				N += BxC / l;
-			}
-
-			// triangle dessus gauche
-			B = positionArray[(i-1)*3 < 5 ? 26 : (i-1)*3];
-			C = positionArray[i-1];
-
-			BxC = glm::cross(B - A, C - A);
-			l = glm::length(BxC);
-
-			if(l > 0.0001f) {
-				N += BxC / l;
-			}
-		}
-
-		else if((i-1) %3 == 0){
-			float l = 0.f;
-			glm::vec3 B(0.f);
-			glm::vec3 C(0.f);
-			glm::vec3 BxC(0.f);
-
-			// Triangle au dessus droite
-			B = positionArray[i-1];
-			C = positionArray[ ((i+1)*3) > 25 ? 4 : ((i+1)*3) ];
-
-			BxC = glm::cross(B - A, C - A);
-			l = glm::length(BxC);
-
-			if(l > 0.0001f) {
-				N += BxC / l;
-			}
-
-			// triangle dessous droite
-			B = positionArray[((i+1)*3) > 25 ? 4 : ((i+1)*3)];
+			B = positionArray[((i+1)*(nbPoints-1)) > (nbPoints-1)*(2*nbPoints-1)+3 ? 3 : ((i+1)*(nbPoints-1))];
 			C = positionArray[i+1];
 
 			BxC = glm::cross(B - A, C - A);
@@ -299,7 +187,7 @@ void BallRenderer3D::drawGrid(const glm::vec3* positionArray, bool wireframe) {
 
 			// triangle dessous gauche
 			B = positionArray[i+1];
-			C = positionArray[(i-1)*3 < 4 ? 25 : (i-1)*3];
+			C = positionArray[i-(nbPoints-1) < 3 ? (nbPoints-1)*(2*nbPoints-1)+3 : i-(nbPoints-1)];
 
 			BxC = glm::cross(B - A, C - A);
 			l = glm::length(BxC);
@@ -309,7 +197,110 @@ void BallRenderer3D::drawGrid(const glm::vec3* positionArray, bool wireframe) {
 			}
 
 			// triangle dessus gauche
-			B = positionArray[(i-1)*3 < 4 ? 25 : (i-1)*3];
+			B = positionArray[i-(nbPoints-1) < 3 ? (nbPoints-1)*(2*nbPoints-1)+3 : i-(nbPoints-1)];
+			C = positionArray[1];
+
+			BxC = glm::cross(B - A, C - A);
+			l = glm::length(BxC);
+
+			if(l > 0.0001f) {
+				N += BxC / l;
+			}
+
+		}
+
+		else if((i-(nbPoints-2))%(nbPoints-1) == 0){
+			float l = 0.f;
+			glm::vec3 B(0.f);
+			glm::vec3 C(0.f);
+			glm::vec3 BxC(0.f);
+
+			// Triangle au dessus droite
+			B = positionArray[i-1];
+			C = positionArray[ ((i+1)*(nbPoints-1) ) > (nbPoints-2)+(nbPoints-1)*(2*nbPoints) ? (nbPoints+1) : ((i+1)*(nbPoints-1) ) ];
+
+			BxC = glm::cross(B - A, C - A);
+			l = glm::length(BxC);
+
+			if(l > 0.0001f) {
+				N += BxC / l;
+			}
+
+			// triangle dessous droite
+			B = positionArray[ ((i+1)*(nbPoints-1) ) > (nbPoints-2)+(nbPoints-1)*(2*nbPoints) ? (nbPoints+1) : ((i+1)*(nbPoints-1) ) ];
+			C = positionArray[2];
+
+			BxC = glm::cross(B - A, C - A);
+			l = glm::length(BxC);
+
+			if(l > 0.0001f) {
+				N += BxC / l;
+			}
+
+			// triangle dessous gauche
+			B = positionArray[2];
+			C = positionArray[ ((i-1)*(nbPoints-1) ) > (nbPoints-2)+(nbPoints-1)*(2*nbPoints) ? (nbPoints+1) : ((i-1)*(nbPoints-1) ) ];
+
+			BxC = glm::cross(B - A, C - A);
+			l = glm::length(BxC);
+
+			if(l > 0.0001f) {
+				N += BxC / l;
+			}
+
+			// triangle dessus gauche
+			B = positionArray[ ((i-1)*(nbPoints-1) ) > (nbPoints-2)+(nbPoints-1)*(2*nbPoints) ? (nbPoints+1) : ((i-1)*(nbPoints-1) ) ];
+			C = positionArray[i-1];
+
+			BxC = glm::cross(B - A, C - A);
+			l = glm::length(BxC);
+
+			if(l > 0.0001f) {
+				N += BxC / l;
+			}
+		}
+
+		else{
+			float l = 0.f;
+			glm::vec3 B(0.f);
+			glm::vec3 C(0.f);
+			glm::vec3 BxC(0.f);
+
+			// Triangle au dessus droite
+			B = positionArray[i-1];
+			C = positionArray[ ((i+1)*(nbPoints-1) ) > (nbPoints-(i-3)%(nbPoints-1))+(nbPoints-1)*(2*nbPoints) ? (i-3)%(nbPoints-1)+3 : ((i+1)*(nbPoints-1) ) ];
+
+			BxC = glm::cross(B - A, C - A);
+			l = glm::length(BxC);
+
+			if(l > 0.0001f) {
+				N += BxC / l;
+			}
+
+			// triangle dessous droite
+			B = positionArray[ ((i+1)*(nbPoints-1) ) > (nbPoints-(i-3)%(nbPoints-1))+(nbPoints-1)*(2*nbPoints) ? (i-3)%(nbPoints-1)+3 : ((i+1)*(nbPoints-1) ) ];
+			C = positionArray[i+1];
+
+			BxC = glm::cross(B - A, C - A);
+			l = glm::length(BxC);
+
+			if(l > 0.0001f) {
+				N += BxC / l;
+			}
+
+			// triangle dessous gauche
+			B = positionArray[i+1];
+			C = positionArray[ ((i-1)*(nbPoints-1) ) > (nbPoints-(i-3)%(nbPoints-1))+(nbPoints-1)*(2*nbPoints) ? (i-3)%(nbPoints-1)+3 : ((i-1)*(nbPoints-1) ) ];
+
+			BxC = glm::cross(B - A, C - A);
+			l = glm::length(BxC);
+
+			if(l > 0.0001f) {
+				N += BxC / l;
+			}
+
+			// triangle dessus gauche
+			B = positionArray[ ((i-1)*(nbPoints-1) ) > (nbPoints-(i-3)%(nbPoints-1))+(nbPoints-1)*(2*nbPoints) ? (i-3)%(nbPoints-1)+3 : ((i-1)*(nbPoints-1) ) ];
 			C = positionArray[i-1];
 
 			BxC = glm::cross(B - A, C - A);

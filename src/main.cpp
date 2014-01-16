@@ -47,6 +47,8 @@ inline glm::vec3 brakeForce(float V, float dt, const glm::vec3& v1, const glm::v
 //|
 //| Structure permettant de simuler un drapeau à l'aide un système masse-ressort
 //|
+struct Cube{
+};
 struct Ball {
 
     // Propriétés physique des points:
@@ -54,7 +56,7 @@ struct Ball {
     std::vector<glm::vec3> velocityArray;
     std::vector<float> massArray;
     std::vector<glm::vec3> forceArray;
-    static const int nbPoints = 27;
+    static const int nbPoints = 200;
 
     // Paramètres des forces interne de simulation
     // Longueurs à vide
@@ -66,13 +68,12 @@ struct Ball {
     float V0, V1, V2; // Paramètres de frein
 
     // Créé boule discrétisée sous forme d'un tétrahèdre avec un point au centre
-    // points. Chaque point a pour masse mass / .
+    // points. Chaque point a pour masse mass / nbPoints .
     Ball(float mass, float radius) :
-    	positionArray(nbPoints), velocityArray(nbPoints),
-    	massArray(nbPoints), forceArray(nbPoints){
+    	positionArray( (nbPoints-1)*(2*nbPoints)+3), velocityArray( (nbPoints-1)*(2*nbPoints)+3),
+    	massArray( (nbPoints-1)*(2*nbPoints)+3,mass /(nbPoints-1)*(2*nbPoints)+3), forceArray( (nbPoints-1)*(2*nbPoints)+3,glm::vec3(0.f)){
 
         glm::vec3 origin(0., 0., 0.);
-        glm::vec3 scale(1.f, 1.f, 1.f);
 
         // On place le centre dans les tableaux
         positionArray[0] = origin;
@@ -81,23 +82,20 @@ struct Ball {
         positionArray[1] = glm::vec3(origin.x, origin.y, radius);
         positionArray[2] = glm::vec3(origin.x, origin.y, -radius);
 
-        for(int j = 0; j < 8; ++j) {
-            for(int i = 0; i < 3; ++i) {
-            	float posX = sin(((i+1)*M_PI/4)) * cos(((j+1)*M_PI/4));
-            	float posY = sin(((i+1)*M_PI/4)) * sin(((j+1)*M_PI/4));
-            	float posZ = cos(((i+1)*M_PI/4));
-                positionArray[3 + i + j * 3] = origin + glm::vec3(posX, posY, posZ) * radius;
+        for(int j = 0; j < 2*nbPoints; ++j) {
+            for(int i = 0; i < nbPoints-1; ++i) {
+            	float posX = sin(((i+1)*M_PI/nbPoints)) * cos(((j+1)*M_PI/nbPoints));
+            	float posY = sin(((i+1)*M_PI/nbPoints)) * sin(((j+1)*M_PI/nbPoints));
+            	float posZ = cos(((i+1)*M_PI/nbPoints));
+                positionArray[3 + i + j * (nbPoints-1)] = origin + glm::vec3(posX, posY, posZ) * radius;
             }
         }
 
         // Les longueurs à vide sont calculés à partir de la position initiale
         // des points sur le drapeau
-        L0.x = scale.x;
-        L0.y = scale.y;
-        L1 = glm::length(L0);
-        L2 = 2.f * L0;
 
-        // Ces paramètres sont à fixer pour avoir un système stable: HAVE FUN ! 'foiré
+
+        // Ces paramètres sont à fixer pour avoir un système stable
         K0 = 1.f;
         K1 = 1.f;
         K2 = 1.f;
@@ -117,6 +115,10 @@ struct Ball {
     // Applique une force externe sur chaque point du drapeau SAUF les points fixes
     void applyExternalForce(const glm::vec3& F) {
         // TODO :
+        for(int i=0;i<forceArray.size();++i)
+        {
+			forceArray[i]+=F;
+		}
     }
 
 
@@ -125,6 +127,14 @@ struct Ball {
     void update(float dt) {
         // TODO
         // Ne pas oublier de remettre les forces à 0 !
+        for(int i=0;i<forceArray.size();i++)
+		{
+			velocityArray[i]=(velocityArray[i]+dt*forceArray[i]/massArray[i]);
+			
+			positionArray[i]=(positionArray[i]+dt*velocityArray[i]);
+			
+			forceArray[i]=glm::vec3(0,0,0);			
+		}
     }
 };
 //|
@@ -142,7 +152,7 @@ int main() {
     wm.setFramerate(30);
 
     Ball ball(4096.f, 2.); // Création d'une balle
-    glm::vec3 G(0.f, -0.001f, 0.f); // Gravité
+    glm::vec3 G(0.f, -0.01f, 0.f); // Gravité
 
     BallRenderer3D renderer(Ball::nbPoints);
     renderer.setProjMatrix(glm::perspective(70.f, float(WINDOW_WIDTH) / WINDOW_HEIGHT, 0.1f, 100.f));
@@ -151,7 +161,7 @@ int main() {
     int mouseLastX, mouseLastY;
 
     // Temps s'écoulant entre chaque frame
-    float dt = 0.f;
+    float dt = 0.01f;
 
 	bool done = false;
     bool wireframe = true;
@@ -166,10 +176,10 @@ int main() {
 
         // Simulation
         if(dt > 0.f) {
-            ball.applyExternalForce(G); // Applique la gravité
-            ball.applyExternalForce(glm::sphericalRand(0.1f)); // Applique un "vent" de direction aléatoire et de force 0.1 Newtons
-            ball.applyInternalForces(dt); // Applique les forces internes
-            ball.update(dt); // Mise à jour du système à partir des forces appliquées
+            //ball.applyExternalForce(G); // Applique la gravité
+           // ball.applyExternalForce(glm::sphericalRand(0.1f)); // Applique un "vent" de direction aléatoire et de force 0.1 Newtons
+            //ball.applyInternalForces(dt); // Applique les forces internes
+            //ball.update(dt); // Mise à jour du système à partir des forces appliquées
         }
 
         // Gestion des evenements
