@@ -1,4 +1,4 @@
-#include "BallRenderer3D.hpp"
+#include "CubeRenderer3D.hpp"
 #include "GLtools.hpp"
 
 #include <iostream>
@@ -6,7 +6,7 @@
 
 namespace imac3 {
 
-const GLchar* BallRenderer3D::VERTEX_SHADER =
+const GLchar* CubeRenderer3D::VERTEX_SHADER =
 		"#version 330 core\n"
 		GL_STRINGIFY(
 				layout(location = 0) in vec3 aVertexPosition;
@@ -25,7 +25,7 @@ void main() {
 }
 		);
 
-const GLchar* BallRenderer3D::FRAGMENT_SHADER =
+const GLchar* CubeRenderer3D::FRAGMENT_SHADER =
 		"#version 330 core\n"
 		GL_STRINGIFY(
 				in vec3 vFragPosition;
@@ -38,11 +38,11 @@ void main() {
 }
 		);
 
-BallRenderer3D::BallRenderer3D(int nbPoints):
+CubeRenderer3D::CubeRenderer3D():
 	m_ProgramID(buildProgram(VERTEX_SHADER, FRAGMENT_SHADER)),
 	m_ProjMatrix(1.f), m_ViewMatrix(1.f),
 	m_nIndexCount(0),
-	m_VertexBuffer( (nbPoints-1)*(2*nbPoints)+3) {
+	m_VertexBuffer(8) {
 	
 	this->nbPoints=nbPoints;
 
@@ -53,37 +53,53 @@ BallRenderer3D::BallRenderer3D(int nbPoints):
 	glGenBuffers(1, &m_IBOID);
 	std::vector<GLuint> indexBuffer;
 
-	for(int i=0; i<2*nbPoints ; ++i){
-		indexBuffer.push_back(1);
-		indexBuffer.push_back(3+i*(nbPoints-1));
-		indexBuffer.push_back(3+(i+1)*(nbPoints-1) > 3+(nbPoints-1)*(2*nbPoints-1) ? 3 : (3+(i+1)*(nbPoints-1)) );
-	}
-	for(int i=0; i<2*nbPoints ; ++i){
-		indexBuffer.push_back(2);
-		indexBuffer.push_back(3+(nbPoints-2)+(i*(nbPoints-1)));
-		indexBuffer.push_back((3+(nbPoints-2)+(i+1)*(nbPoints-1)>(nbPoints-1)*(2*nbPoints-1)+2+(nbPoints-1)) ? 2+(nbPoints-1) : (3+(nbPoints-2)+(i+1)*(nbPoints-1)) );
-	}
-	for(int i=0; i<2*nbPoints-1; ++i){
-		for(int j=0; j<nbPoints-2; ++j){
-			indexBuffer.push_back(3+j+i*(nbPoints-1));
-			indexBuffer.push_back(3+j+(i+1)*(nbPoints-1));
-			indexBuffer.push_back(4+j+(i*(nbPoints-1)));
-
-			indexBuffer.push_back(4+j+(i*(nbPoints-1)));
-			indexBuffer.push_back(4+j+((i+1)*(nbPoints-1)));
-			indexBuffer.push_back(3+j+(i+1)*(nbPoints-1));
-		}
-	}
-
-	for(int j=0; j<nbPoints-2 ; ++j){
-		indexBuffer.push_back(3+j+(nbPoints-1)*(2*nbPoints-1));
-		indexBuffer.push_back(3+j);
-		indexBuffer.push_back(4+j+(nbPoints-1)*(2*nbPoints-1));
-
-		indexBuffer.push_back(4+j+(nbPoints-1)*(2*nbPoints-1));
-		indexBuffer.push_back(4+j);
-		indexBuffer.push_back(3+j);
-	}
+	indexBuffer.push_back(0);
+	indexBuffer.push_back(1);
+	indexBuffer.push_back(2);
+	
+	indexBuffer.push_back(2);
+	indexBuffer.push_back(3);
+	indexBuffer.push_back(0);
+	
+	indexBuffer.push_back(0);
+	indexBuffer.push_back(1);
+	indexBuffer.push_back(4);
+	
+	indexBuffer.push_back(4);
+	indexBuffer.push_back(5);
+	indexBuffer.push_back(0);
+	
+	indexBuffer.push_back(0);
+	indexBuffer.push_back(3);
+	indexBuffer.push_back(7);
+	
+	indexBuffer.push_back(7);
+	indexBuffer.push_back(4);
+	indexBuffer.push_back(0);
+	
+	indexBuffer.push_back(1);
+	indexBuffer.push_back(2);
+	indexBuffer.push_back(6);
+	
+	indexBuffer.push_back(6);
+	indexBuffer.push_back(5);
+	indexBuffer.push_back(1);
+	
+	indexBuffer.push_back(2);
+	indexBuffer.push_back(3);
+	indexBuffer.push_back(7);
+	
+	indexBuffer.push_back(7);
+	indexBuffer.push_back(6);
+	indexBuffer.push_back(2);
+	
+	indexBuffer.push_back(4);
+	indexBuffer.push_back(5);
+	indexBuffer.push_back(6);
+	
+	indexBuffer.push_back(6);
+	indexBuffer.push_back(7);
+	indexBuffer.push_back(4);
 
 	m_nIndexCount = indexBuffer.size();
 
@@ -125,9 +141,11 @@ void BallRenderer3D::drawGrid(const glm::vec3* positionArray, bool wireframe) {
 	for(int i = 1; i < 3+(nbPoints-1)*(2*nbPoints); ++i) {
 		m_VertexBuffer[i].position = positionArray[i];
 
-		glm::vec3 N = positionArray[i];
+		glm::vec3 N(0.f);
 
-		/*if(i == 1){
+		glm::vec3 A = positionArray[i];
+
+		if(i == 1){
 			for(int j=0; j < 2*nbPoints; ++j){
 				glm::vec3 B = positionArray[3+j*(nbPoints-1)];
 				glm::vec3 C = positionArray[(3+(j+1)*(nbPoints-1)) > 3+(nbPoints-1)*(2*nbPoints-1)? 3 : (3+(j+1)*(nbPoints-1))];
@@ -307,7 +325,7 @@ void BallRenderer3D::drawGrid(const glm::vec3* positionArray, bool wireframe) {
 			if(l > 0.0001f) {
 				N += BxC / l;
 			}
-		}*/
+		}
 
 		m_VertexBuffer[i].normal = N != glm::vec3(0.f) ? glm::normalize(N) : glm::vec3(0.f);
 	}

@@ -47,8 +47,30 @@ inline glm::vec3 brakeForce(float V, float dt, const glm::vec3& v1, const glm::v
 //|
 //| Structure permettant de simuler un drapeau à l'aide un système masse-ressort
 //|
-struct Cube{
-};
+/*struct Cube{
+	std::vector<glm::vec3> positionArray;
+    std::vector<glm::vec3> velocityArray;
+    std::vector<float> massArray;
+    std::vector<glm::vec3> forceArray;
+    
+    glm::vec3 origin=glm::vec3(0.f)
+    
+     Cube(float mass, float width, float lenght, float height) :
+    	positionArray(8), velocityArray(3),
+    	massArray(8,mass /(8), forceArray( 8,glm::vec3(0.f)){
+			
+		positionArray[0]=glm::vec3(-width/2,-lenght/2,-height/2);
+		positionArray[1]=glm::vec3(-width/2,lenght/2,-height/2);
+		positionArray[2]=glm::vec3(width/2,lenght/2,-height/2);
+		positionArray[3]=glm::vec3(width/2,-lenght/2,-height/2);
+			
+		positionArray[4]=glm::vec3(-width/2,-lenght/2,height/2);
+		positionArray[5]=glm::vec3(-width/2,lenght/2,height/2);
+		positionArray[6]=glm::vec3(width/2,lenght/2,height/2);
+		positionArray[7]=glm::vec3(width/2,-lenght/2,height/2);		
+	}
+	
+};*/
 struct Ball {
 
     // Propriétés physique des points:
@@ -56,7 +78,7 @@ struct Ball {
     std::vector<glm::vec3> velocityArray;
     std::vector<float> massArray;
     std::vector<glm::vec3> forceArray;
-    static const int nbPoints = 200;
+    static const int nbPoints = 100;
 
     // Paramètres des forces interne de simulation
     // Longueurs à vide
@@ -151,11 +173,16 @@ int main() {
     WindowManager wm(WINDOW_WIDTH, WINDOW_HEIGHT, "Newton was a Geek");
     wm.setFramerate(30);
 
-    Ball ball(4096.f, 2.); // Création d'une balle
-    glm::vec3 G(0.f, -0.01f, 0.f); // Gravité
+    Ball ball(100000.f, 2.); // Création d'une balle
+    
+    //Cube cube(10.f,5.,5.,5.);
+    glm::vec3 G(0.f, -10000.f, 0.f); // Gravité
 
     BallRenderer3D renderer(Ball::nbPoints);
     renderer.setProjMatrix(glm::perspective(70.f, float(WINDOW_WIDTH) / WINDOW_HEIGHT, 0.1f, 100.f));
+    
+    //CubeRenderer3D cubeRenderer(Ball::nbPoints);
+    //renderer.setProjMatrix(glm::perspective(70.f, float(WINDOW_WIDTH) / WINDOW_HEIGHT, 0.1f, 100.f));
 
     TrackballCamera camera;
     int mouseLastX, mouseLastY;
@@ -179,9 +206,11 @@ int main() {
             //ball.applyExternalForce(G); // Applique la gravité
            // ball.applyExternalForce(glm::sphericalRand(0.1f)); // Applique un "vent" de direction aléatoire et de force 0.1 Newtons
             //ball.applyInternalForces(dt); // Applique les forces internes
-            //ball.update(dt); // Mise à jour du système à partir des forces appliquées
+            ball.update(dt); // Mise à jour du système à partir des forces appliquées
         }
-
+		/*std::cout<<"position:("<<ball.positionArray[0].x<<ball.positionArray[0].y<<ball.positionArray[0].z
+		<<") force: ("<<ball.forceArray[0].x<<ball.forceArray[0].y<<ball.forceArray[0].z
+		<<") vitesse: ("<<ball.velocityArray[0].x<<ball.velocityArray[0].y<<ball.velocityArray[0].z<<std::endl;*/
         // Gestion des evenements
 		SDL_Event e;
         while(wm.pollEvent(e)) {
