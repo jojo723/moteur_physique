@@ -26,20 +26,26 @@ using namespace imac3;
 //| K est la résistance du ressort et L sa longueur à vide
 inline glm::vec3 hookForce(float K, float L, const glm::vec3& P1, const glm::vec3& P2) {
     static const float epsilon = 0.0001;
-    // TODO
+    glm::vec3 vector=P1-P2;
+	float d=glm::distance(P1,P2);
+	d=(d<epsilon)?epsilon:d;
+	return K*(1-L/d)*vector; 
 }
 
 //| Calcule une force de type frein cinétique entre deux particules de vélocités v1 et v2
 //| V est le paramètre du frein et dt le pas temporel
 inline glm::vec3 brakeForce(float V, float dt, const glm::vec3& v1, const glm::vec3& v2) {
-    // TODO
+    glm::vec3 vector=v1-v2;
+	return V*vector/dt;
 }
 //|
 //////////////////////////////////////////////////////////////////
 //                          EOF UTILS                           //
 //////////////////////////////////////////////////////////////////
-
-
+struct ParticleState{
+	glm::vec3 speed;
+	glm::vec3 position;
+};
 
 //////////////////////////////////////////////////////////////////
 //                      BOF STRUCT BALL                         //
@@ -127,6 +133,13 @@ struct Ball {
         V2 = 0.1f;
     }
 
+	ParticleState getNextState(uint32_t dx, float dt)const
+	{
+		ParticleState state;
+		state.speed=(velocityArray[dx]+dt*forceArray[dx]/massArray[dx]);	
+		state.position=(positionArray[dx]+dt*velocityArray[dx]);
+		return state;
+	}
 
     // Applique les forces internes sur chaque point du drapeau SAUF les points fixes
     void applyInternalForces(float dt) {
@@ -142,7 +155,24 @@ struct Ball {
 			forceArray[i]+=F;
 		}
     }
-
+    void rebond(float dt){
+		for(int i=0;i<forceArray.size();i++)
+		{
+			ParticleState state=getNextState(i,dt);
+			if(state.position.y<-1)
+			{
+				glm::vec3 normal(0.,-1.,0.);
+				float m_fElasticity=2;
+				float dot=state.speed.x*(-normal.x)+state.speed.y*(-normal.y);
+				//printf("dot:%f->speed: %f,%f; normal:%f,%f \n\n",dot,state.speed.x,state.speed.y,normal.x,normal.y);
+				glm::vec3 force=m_fElasticity*dot*massArray[i]/dt*normal;
+				//printf("collide %i: next force: %f,%f, elasticity:%f,dot:%f,mass:%f,dt:%f, normal:%f%f:",i,pm.arr_force[i].x,pm.arr_force[i].y,m_fElasticity,dot,pm.arr_mass[i],m_fDt,normal.x,normal.y);
+				forceArray[i]=(forceArray[i]+force);
+				//printf(" new force: %f,%f \n\n",pm.arr_force[i].x,pm.arr_force[i].y);
+			}
+			
+		}
+	}
 
     // Met à jour la vitesse et la position de chaque point du drapeau
     // en utilisant un schema de type Leapfrog
@@ -173,16 +203,13 @@ int main() {
     WindowManager wm(WINDOW_WIDTH, WINDOW_HEIGHT, "Newton was a Geek");
     wm.setFramerate(30);
 
-    Ball ball(100000.f, 2.); // Création d'une balle
+    Ball ball(100000.f, 0.2); // Création d'une balle
     
     //Cube cube(10.f,5.,5.,5.);
     glm::vec3 G(0.f, -10000.f, 0.f); // Gravité
 
     BallRenderer3D renderer(Ball::nbPoints);
     renderer.setProjMatrix(glm::perspective(70.f, float(WINDOW_WIDTH) / WINDOW_HEIGHT, 0.1f, 100.f));
-    
-    //CubeRenderer3D cubeRenderer(Ball::nbPoints);
-    //renderer.setProjMatrix(glm::perspective(70.f, float(WINDOW_WIDTH) / WINDOW_HEIGHT, 0.1f, 100.f));
 
     TrackballCamera camera;
     int mouseLastX, mouseLastY;
@@ -203,9 +230,10 @@ int main() {
 
         // Simulation
         if(dt > 0.f) {
-            //ball.applyExternalForce(G); // Applique la gravité
+            ball.applyExternalForce(G); // Applique la gravité
            // ball.applyExternalForce(glm::sphericalRand(0.1f)); // Applique un "vent" de direction aléatoire et de force 0.1 Newtons
             //ball.applyInternalForces(dt); // Applique les forces internes
+            ball.rebond(dt);
             ball.update(dt); // Mise à jour du système à partir des forces appliquées
         }
 		/*std::cout<<"position:("<<ball.positionArray[0].x<<ball.positionArray[0].y<<ball.positionArray[0].z
