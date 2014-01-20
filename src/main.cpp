@@ -88,10 +88,7 @@ struct Ball {
 
     // Paramètres des forces interne de simulation
     // Longueurs à vide
-    glm::vec2 L0;
-    float L1;
-    glm::vec2 L2;
-
+    float L0,L1,L2;
     float K0, K1, K2; // Paramètres de résistance
     float V0, V1, V2; // Paramètres de frein
 
@@ -121,6 +118,9 @@ struct Ball {
 
         // Les longueurs à vide sont calculés à partir de la position initiale
         // des points sur le drapeau
+        L0=radius;
+        L1=glm::distance(positionArray[1],positionArray[3]);
+        L2=glm::distance(positionArray[3],positionArray[3+nbPoints]);
 
 
         // Ces paramètres sont à fixer pour avoir un système stable
@@ -128,8 +128,8 @@ struct Ball {
         K1 = 1.f;
         K2 = 1.f;
 
-        V0 = 0.1f;
-        V1 = 0.1f;
+        V0 = 0.f;
+        V1 = 0.f;
         V2 = 0.1f;
     }
 
@@ -143,7 +143,39 @@ struct Ball {
 
     // Applique les forces internes sur chaque point du drapeau SAUF les points fixes
     void applyInternalForces(float dt) {
-        // TODO : 
+		
+		forceArray[0]+=hookForce(K0,L0,positionArray[0],positionArray[1])+brakeForce(V0,dt,velocityArray[0],velocityArray[1]);
+		forceArray[1]+=hookForce(K0,L0,positionArray[1],positionArray[0])+brakeForce(V0,dt,velocityArray[1],velocityArray[0]);
+		forceArray[0]+=hookForce(K0,L0,positionArray[0],positionArray[2])+brakeForce(V0,dt,velocityArray[0],velocityArray[2]);
+		forceArray[2]+=hookForce(K0,L0,positionArray[2],positionArray[0])+brakeForce(V0,dt,velocityArray[2],velocityArray[0]);
+			
+		for(int i=3; i<forceArray.size();++i)
+		{
+			forceArray[0]+=hookForce(K0,L0,positionArray[0],positionArray[i])+brakeForce(V0,dt,velocityArray[0],velocityArray[i]);
+			forceArray[i]+=hookForce(K0,L0,positionArray[i],positionArray[0])+brakeForce(V0,dt,velocityArray[i],velocityArray[0]);
+			
+			if((i-3)%(nbPoints-1)==0)
+			{
+				forceArray[1]+=hookForce(K1,L1,positionArray[1],positionArray[i])+brakeForce(V1,dt,velocityArray[1],velocityArray[i]);
+				forceArray[i]+=hookForce(K1,L1,positionArray[i],positionArray[1])+brakeForce(V1,dt,velocityArray[i],velocityArray[1]);
+			}			
+			if((i-2-nbPoints)%(nbPoints-1)==0)
+			{
+				forceArray[2]+=hookForce(K1,L1,positionArray[2],positionArray[i])+brakeForce(V1,dt,velocityArray[2],velocityArray[i]);
+				forceArray[i]+=hookForce(K1,L1,positionArray[i],positionArray[2])+brakeForce(V1,dt,velocityArray[i],velocityArray[2]);
+			}
+			if((i-2-nbPoints)%(nbPoints-1)==0)
+			{
+				forceArray[i]+=hookForce(K1,L1,positionArray[i],positionArray[i+1])+brakeForce(V1,dt,velocityArray[i],velocityArray[i+1]);
+				forceArray[i+1]+=hookForce(K1,L1,positionArray[i+1],positionArray[i])+brakeForce(V1,dt,velocityArray[i+1],velocityArray[i]);
+			}	
+			
+			int j=(i+(nbPoints-1)<(nbPoints-1)*(2*nbPoints)+3 )? (i+(nbPoints-1)) : ((i-2)%(nbPoints-1)+3);
+			forceArray[i]+=hookForce(K1,L1,positionArray[i],positionArray[j])+brakeForce(V1,dt,velocityArray[i],velocityArray[j]);
+			forceArray[j]+=hookForce(K1,L1,positionArray[j],positionArray[i])+brakeForce(V1,dt,velocityArray[j],velocityArray[i]);
+			
+		}		
+         
     }
 
 
@@ -232,7 +264,7 @@ int main() {
         if(dt > 0.f) {
             ball.applyExternalForce(G); // Applique la gravité
            // ball.applyExternalForce(glm::sphericalRand(0.1f)); // Applique un "vent" de direction aléatoire et de force 0.1 Newtons
-            //ball.applyInternalForces(dt); // Applique les forces internes
+            ball.applyInternalForces(dt); // Applique les forces internes
             ball.rebond(dt);
             ball.update(dt); // Mise à jour du système à partir des forces appliquées
         }
