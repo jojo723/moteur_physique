@@ -6,45 +6,7 @@
 
 namespace imac3 {
 
-const GLchar* BallRenderer3D::VERTEX_SHADER =
-		"#version 330 core\n"
-		GL_STRINGIFY(
-				layout(location = 0) in vec3 aVertexPosition;
-layout(location = 1) in vec3 aVertexNormal;
-
-uniform mat4 uMVPMatrix;
-uniform mat4 uMVMatrix;
-
-out vec3 vFragPosition;
-out vec3 vFragNormal;
-
-void main() {
-	vFragPosition = vec3(uMVPMatrix * vec4(aVertexPosition, 1));
-	vFragNormal = vec3(uMVMatrix * vec4(aVertexNormal, 0));
-	gl_Position = uMVPMatrix * vec4(aVertexPosition, 1);
-}
-		);
-
-const GLchar* BallRenderer3D::FRAGMENT_SHADER =
-		"#version 330 core\n"
-		GL_STRINGIFY(
-				in vec3 vFragPosition;
-in vec3 vFragNormal;
-
-out vec3 fFragColor;
-
-void main() {
-	fFragColor = vec3(abs(dot(normalize(vFragPosition), normalize(vFragNormal))));
-}
-		);
-
-BallRenderer3D::BallRenderer3D(int nbPoints):
-	m_ProgramID(buildProgram(VERTEX_SHADER, FRAGMENT_SHADER)),
-	m_ProjMatrix(1.f), m_ViewMatrix(1.f),
-	m_nIndexCount(0),
-	m_VertexBuffer( (nbPoints-1)*(2*nbPoints)+3) {
-	
-	this->nbPoints=nbPoints;
+BallRenderer3D::BallRenderer3D(Ball &B) : Renderer3D(B.nbPoints, (B.nbPoints-1)*(2*B.nbPoints)+3 ), m_Ball(B)  {
 
 	// Création du VBO
 	glGenBuffers(1, &m_VBOID);
@@ -102,29 +64,20 @@ BallRenderer3D::BallRenderer3D(int nbPoints):
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 	glBindVertexArray(0);
 
-	m_uMVPMatrix = glGetUniformLocation(m_ProgramID, "uMVPMatrix");
-	m_uMVMatrix = glGetUniformLocation(m_ProgramID, "uMVMatrix");
 }
 
 BallRenderer3D::~BallRenderer3D() {
-	glDeleteBuffers(1, &m_VBOID);
-	glDeleteBuffers(1, &m_IBOID);
-	glDeleteVertexArrays(1, &m_VAOID);
-	glDeleteProgram(m_ProgramID);
+
 }
 
-void BallRenderer3D::clear() {
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-}
-
-void BallRenderer3D::drawGrid(const glm::vec3* positionArray, bool wireframe) {
+void BallRenderer3D::draw(bool wireframe) {
 	glEnable(GL_DEPTH_TEST);
 
 	glBindBuffer(GL_ARRAY_BUFFER, m_VBOID);
 
 	for(int i = 1; i < 3+(nbPoints-1)*(2*nbPoints); ++i) {
-		m_VertexBuffer[i].position = positionArray[i];
-		glm::vec3 N = positionArray[i]-positionArray[0];
+		m_VertexBuffer[i].position = m_Ball.positionArray[i];
+		glm::vec3 N = m_Ball.positionArray[i];
 		m_VertexBuffer[i].normal = N != glm::vec3(0.f) ? glm::normalize(N) : glm::vec3(0.f);
 	}
 
@@ -145,6 +98,8 @@ void BallRenderer3D::drawGrid(const glm::vec3* positionArray, bool wireframe) {
 	glBindVertexArray(m_VAOID);
 	glDrawElements(GL_TRIANGLES, m_nIndexCount, GL_UNSIGNED_INT, 0);
 	glBindVertexArray(0);
+
 }
+
 
 }
