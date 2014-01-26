@@ -124,7 +124,7 @@ void BallRenderer3D::drawGrid(const glm::vec3* positionArray, bool wireframe) {
 
 	for(int i = 1; i < 3+(nbPoints-1)*(2*nbPoints); ++i) {
 		m_VertexBuffer[i].position = positionArray[i];
-		glm::vec3 N = positionArray[i];
+		glm::vec3 N = positionArray[i]-positionArray[0];
 		m_VertexBuffer[i].normal = N != glm::vec3(0.f) ? glm::normalize(N) : glm::vec3(0.f);
 	}
 

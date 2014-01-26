@@ -7,7 +7,7 @@ namespace imac3 {
 
 class TrackballCamera {
 public:
-	TrackballCamera(): m_fDistance(5.f), m_fAngleX(0.f), m_fAngleY(0.f) {
+	TrackballCamera(): m_fDistance(5.f), m_fAngleX(-90), m_fAngleY(0.f) {
 	}
 
 	void moveFront(float delta) {
