@@ -72,10 +72,88 @@ CMakeFiles/Flag.dir/src/main.cpp.o
  ../third-party/glm-0.9.4.6/glm/gtc/matrix_transform.inl
  ../third-party/glm-0.9.4.6/glm/gtc/random.hpp
  ../third-party/glm-0.9.4.6/glm/gtc/random.inl
- /home/jojo/Documents/MoteurPhysique/src/main.cpp
- /home/jojo/Documents/MoteurPhysique/src/renderer/BallRenderer3D.hpp
- /home/jojo/Documents/MoteurPhysique/src/renderer/TrackballCamera.hpp
- /home/jojo/Documents/MoteurPhysique/src/renderer/WindowManager.hpp
+ /home/florent/workspace/moteur_physique/src/main.cpp
+ /home/florent/workspace/moteur_physique/src/renderer/Ball.hpp
+ /home/florent/workspace/moteur_physique/src/renderer/BallRenderer3D.hpp
+ /home/florent/workspace/moteur_physique/src/renderer/Renderer3D.hpp
+ /home/florent/workspace/moteur_physique/src/renderer/TrackballCamera.hpp
+ /home/florent/workspace/moteur_physique/src/renderer/WindowManager.hpp
+CMakeFiles/Flag.dir/src/renderer/Ball.cpp.o
+ ../third-party/glew-1.10.0/include/GL/glew.h
+ ../third-party/glm-0.9.4.6/glm/./core/_detail.hpp
+ ../third-party/glm-0.9.4.6/glm/./core/_fixes.hpp
+ ../third-party/glm-0.9.4.6/glm/./core/_swizzle.hpp
+ ../third-party/glm-0.9.4.6/glm/./core/_swizzle_func.hpp
+ ../third-party/glm-0.9.4.6/glm/./core/_vectorize.hpp
+ ../third-party/glm-0.9.4.6/glm/./core/func_common.hpp
+ ../third-party/glm-0.9.4.6/glm/./core/func_common.inl
+ ../third-party/glm-0.9.4.6/glm/./core/func_exponential.hpp
+ ../third-party/glm-0.9.4.6/glm/./core/func_exponential.inl
+ ../third-party/glm-0.9.4.6/glm/./core/func_geometric.hpp
+ ../third-party/glm-0.9.4.6/glm/./core/func_geometric.inl
+ ../third-party/glm-0.9.4.6/glm/./core/func_integer.hpp
+ ../third-party/glm-0.9.4.6/glm/./core/func_integer.inl
+ ../third-party/glm-0.9.4.6/glm/./core/func_matrix.hpp
+ ../third-party/glm-0.9.4.6/glm/./core/func_matrix.inl
+ ../third-party/glm-0.9.4.6/glm/./core/func_noise.hpp
+ ../third-party/glm-0.9.4.6/glm/./core/func_noise.inl
+ ../third-party/glm-0.9.4.6/glm/./core/func_packing.hpp
+ ../third-party/glm-0.9.4.6/glm/./core/func_packing.inl
+ ../third-party/glm-0.9.4.6/glm/./core/func_trigonometric.hpp
+ ../third-party/glm-0.9.4.6/glm/./core/func_trigonometric.inl
+ ../third-party/glm-0.9.4.6/glm/./core/func_vector_relational.hpp
+ ../third-party/glm-0.9.4.6/glm/./core/func_vector_relational.inl
+ ../third-party/glm-0.9.4.6/glm/./core/setup.hpp
+ ../third-party/glm-0.9.4.6/glm/./core/type.hpp
+ ../third-party/glm-0.9.4.6/glm/./core/type_float.hpp
+ ../third-party/glm-0.9.4.6/glm/./core/type_gentype.hpp
+ ../third-party/glm-0.9.4.6/glm/./core/type_half.hpp
+ ../third-party/glm-0.9.4.6/glm/./core/type_half.inl
+ ../third-party/glm-0.9.4.6/glm/./core/type_int.hpp
+ ../third-party/glm-0.9.4.6/glm/./core/type_mat.hpp
+ ../third-party/glm-0.9.4.6/glm/./core/type_mat2x2.hpp
+ ../third-party/glm-0.9.4.6/glm/./core/type_mat2x2.inl
+ ../third-party/glm-0.9.4.6/glm/./core/type_mat2x3.hpp
+ ../third-party/glm-0.9.4.6/glm/./core/type_mat2x3.inl
+ ../third-party/glm-0.9.4.6/glm/./core/type_mat2x4.hpp
+ ../third-party/glm-0.9.4.6/glm/./core/type_mat2x4.inl
+ ../third-party/glm-0.9.4.6/glm/./core/type_mat3x2.hpp
+ ../third-party/glm-0.9.4.6/glm/./core/type_mat3x2.inl
+ ../third-party/glm-0.9.4.6/glm/./core/type_mat3x3.hpp
+ ../third-party/glm-0.9.4.6/glm/./core/type_mat3x3.inl
+ ../third-party/glm-0.9.4.6/glm/./core/type_mat3x4.hpp
+ ../third-party/glm-0.9.4.6/glm/./core/type_mat3x4.inl
+ ../third-party/glm-0.9.4.6/glm/./core/type_mat4x2.hpp
+ ../third-party/glm-0.9.4.6/glm/./core/type_mat4x2.inl
+ ../third-party/glm-0.9.4.6/glm/./core/type_mat4x3.hpp
+ ../third-party/glm-0.9.4.6/glm/./core/type_mat4x3.inl
+ ../third-party/glm-0.9.4.6/glm/./core/type_mat4x4.hpp
+ ../third-party/glm-0.9.4.6/glm/./core/type_mat4x4.inl
+ ../third-party/glm-0.9.4.6/glm/./core/type_size.hpp
+ ../third-party/glm-0.9.4.6/glm/./core/type_vec.hpp
+ ../third-party/glm-0.9.4.6/glm/./core/type_vec1.hpp
+ ../third-party/glm-0.9.4.6/glm/./core/type_vec1.inl
+ ../third-party/glm-0.9.4.6/glm/./core/type_vec2.hpp
+ ../third-party/glm-0.9.4.6/glm/./core/type_vec2.inl
+ ../third-party/glm-0.9.4.6/glm/./core/type_vec3.hpp
+ ../third-party/glm-0.9.4.6/glm/./core/type_vec3.inl
+ ../third-party/glm-0.9.4.6/glm/./core/type_vec4.hpp
+ ../third-party/glm-0.9.4.6/glm/./core/type_vec4.inl
+ ../third-party/glm-0.9.4.6/glm/core/_fixes.hpp
+ ../third-party/glm-0.9.4.6/glm/core/setup.hpp
+ ../third-party/glm-0.9.4.6/glm/glm.hpp
+ ../third-party/glm-0.9.4.6/glm/gtc/../glm.hpp
+ ../third-party/glm-0.9.4.6/glm/gtc/../gtc/../gtc/constants.hpp
+ ../third-party/glm-0.9.4.6/glm/gtc/../gtc/../gtc/constants.inl
+ ../third-party/glm-0.9.4.6/glm/gtc/../gtc/half_float.hpp
+ ../third-party/glm-0.9.4.6/glm/gtc/../gtc/half_float.inl
+ ../third-party/glm-0.9.4.6/glm/gtc/../gtc/quaternion.hpp
+ ../third-party/glm-0.9.4.6/glm/gtc/../gtc/quaternion.inl
+ ../third-party/glm-0.9.4.6/glm/gtc/type_ptr.hpp
+ ../third-party/glm-0.9.4.6/glm/gtc/type_ptr.inl
+ /home/florent/workspace/moteur_physique/src/renderer/Ball.cpp
+ /home/florent/workspace/moteur_physique/src/renderer/Ball.hpp
+ /home/florent/workspace/moteur_physique/src/renderer/GLtools.hpp
 CMakeFiles/Flag.dir/src/renderer/BallRenderer3D.cpp.o
  ../third-party/glew-1.10.0/include/GL/glew.h
  ../third-party/glm-0.9.4.6/glm/./core/_detail.hpp
@@ -149,13 +227,15 @@ CMakeFiles/Flag.dir/src/renderer/BallRenderer3D.cpp.o
  ../third-party/glm-0.9.4.6/glm/gtc/../gtc/quaternion.inl
  ../third-party/glm-0.9.4.6/glm/gtc/type_ptr.hpp
  ../third-party/glm-0.9.4.6/glm/gtc/type_ptr.inl
- /home/jojo/Documents/MoteurPhysique/src/renderer/BallRenderer3D.cpp
- /home/jojo/Documents/MoteurPhysique/src/renderer/BallRenderer3D.hpp
- /home/jojo/Documents/MoteurPhysique/src/renderer/GLtools.hpp
+ /home/florent/workspace/moteur_physique/src/renderer/Ball.hpp
+ /home/florent/workspace/moteur_physique/src/renderer/BallRenderer3D.cpp
+ /home/florent/workspace/moteur_physique/src/renderer/BallRenderer3D.hpp
+ /home/florent/workspace/moteur_physique/src/renderer/GLtools.hpp
+ /home/florent/workspace/moteur_physique/src/renderer/Renderer3D.hpp
 CMakeFiles/Flag.dir/src/renderer/GLtools.cpp.o
  ../third-party/glew-1.10.0/include/GL/glew.h
- /home/jojo/Documents/MoteurPhysique/src/renderer/GLtools.cpp
- /home/jojo/Documents/MoteurPhysique/src/renderer/GLtools.hpp
+ /home/florent/workspace/moteur_physique/src/renderer/GLtools.cpp
+ /home/florent/workspace/moteur_physique/src/renderer/GLtools.hpp
 CMakeFiles/Flag.dir/src/renderer/ParticleRenderer2D.cpp.o
  ../third-party/glew-1.10.0/include/GL/glew.h
  ../third-party/glm-0.9.4.6/glm/./core/_detail.hpp
@@ -229,10 +309,86 @@ CMakeFiles/Flag.dir/src/renderer/ParticleRenderer2D.cpp.o
  ../third-party/glm-0.9.4.6/glm/gtc/../gtc/quaternion.inl
  ../third-party/glm-0.9.4.6/glm/gtc/type_ptr.hpp
  ../third-party/glm-0.9.4.6/glm/gtc/type_ptr.inl
- /home/jojo/Documents/MoteurPhysique/src/renderer/GLtools.hpp
- /home/jojo/Documents/MoteurPhysique/src/renderer/ParticleRenderer2D.cpp
- /home/jojo/Documents/MoteurPhysique/src/renderer/ParticleRenderer2D.hpp
+ /home/florent/workspace/moteur_physique/src/renderer/GLtools.hpp
+ /home/florent/workspace/moteur_physique/src/renderer/ParticleRenderer2D.cpp
+ /home/florent/workspace/moteur_physique/src/renderer/ParticleRenderer2D.hpp
+CMakeFiles/Flag.dir/src/renderer/Renderer3D.cpp.o
+ ../third-party/glew-1.10.0/include/GL/glew.h
+ ../third-party/glm-0.9.4.6/glm/./core/_detail.hpp
+ ../third-party/glm-0.9.4.6/glm/./core/_fixes.hpp
+ ../third-party/glm-0.9.4.6/glm/./core/_swizzle.hpp
+ ../third-party/glm-0.9.4.6/glm/./core/_swizzle_func.hpp
+ ../third-party/glm-0.9.4.6/glm/./core/_vectorize.hpp
+ ../third-party/glm-0.9.4.6/glm/./core/func_common.hpp
+ ../third-party/glm-0.9.4.6/glm/./core/func_common.inl
+ ../third-party/glm-0.9.4.6/glm/./core/func_exponential.hpp
+ ../third-party/glm-0.9.4.6/glm/./core/func_exponential.inl
+ ../third-party/glm-0.9.4.6/glm/./core/func_geometric.hpp
+ ../third-party/glm-0.9.4.6/glm/./core/func_geometric.inl
+ ../third-party/glm-0.9.4.6/glm/./core/func_integer.hpp
+ ../third-party/glm-0.9.4.6/glm/./core/func_integer.inl
+ ../third-party/glm-0.9.4.6/glm/./core/func_matrix.hpp
+ ../third-party/glm-0.9.4.6/glm/./core/func_matrix.inl
+ ../third-party/glm-0.9.4.6/glm/./core/func_noise.hpp
+ ../third-party/glm-0.9.4.6/glm/./core/func_noise.inl
+ ../third-party/glm-0.9.4.6/glm/./core/func_packing.hpp
+ ../third-party/glm-0.9.4.6/glm/./core/func_packing.inl
+ ../third-party/glm-0.9.4.6/glm/./core/func_trigonometric.hpp
+ ../third-party/glm-0.9.4.6/glm/./core/func_trigonometric.inl
+ ../third-party/glm-0.9.4.6/glm/./core/func_vector_relational.hpp
+ ../third-party/glm-0.9.4.6/glm/./core/func_vector_relational.inl
+ ../third-party/glm-0.9.4.6/glm/./core/setup.hpp
+ ../third-party/glm-0.9.4.6/glm/./core/type.hpp
+ ../third-party/glm-0.9.4.6/glm/./core/type_float.hpp
+ ../third-party/glm-0.9.4.6/glm/./core/type_gentype.hpp
+ ../third-party/glm-0.9.4.6/glm/./core/type_half.hpp
+ ../third-party/glm-0.9.4.6/glm/./core/type_half.inl
+ ../third-party/glm-0.9.4.6/glm/./core/type_int.hpp
+ ../third-party/glm-0.9.4.6/glm/./core/type_mat.hpp
+ ../third-party/glm-0.9.4.6/glm/./core/type_mat2x2.hpp
+ ../third-party/glm-0.9.4.6/glm/./core/type_mat2x2.inl
+ ../third-party/glm-0.9.4.6/glm/./core/type_mat2x3.hpp
+ ../third-party/glm-0.9.4.6/glm/./core/type_mat2x3.inl
+ ../third-party/glm-0.9.4.6/glm/./core/type_mat2x4.hpp
+ ../third-party/glm-0.9.4.6/glm/./core/type_mat2x4.inl
+ ../third-party/glm-0.9.4.6/glm/./core/type_mat3x2.hpp
+ ../third-party/glm-0.9.4.6/glm/./core/type_mat3x2.inl
+ ../third-party/glm-0.9.4.6/glm/./core/type_mat3x3.hpp
+ ../third-party/glm-0.9.4.6/glm/./core/type_mat3x3.inl
+ ../third-party/glm-0.9.4.6/glm/./core/type_mat3x4.hpp
+ ../third-party/glm-0.9.4.6/glm/./core/type_mat3x4.inl
+ ../third-party/glm-0.9.4.6/glm/./core/type_mat4x2.hpp
+ ../third-party/glm-0.9.4.6/glm/./core/type_mat4x2.inl
+ ../third-party/glm-0.9.4.6/glm/./core/type_mat4x3.hpp
+ ../third-party/glm-0.9.4.6/glm/./core/type_mat4x3.inl
+ ../third-party/glm-0.9.4.6/glm/./core/type_mat4x4.hpp
+ ../third-party/glm-0.9.4.6/glm/./core/type_mat4x4.inl
+ ../third-party/glm-0.9.4.6/glm/./core/type_size.hpp
+ ../third-party/glm-0.9.4.6/glm/./core/type_vec.hpp
+ ../third-party/glm-0.9.4.6/glm/./core/type_vec1.hpp
+ ../third-party/glm-0.9.4.6/glm/./core/type_vec1.inl
+ ../third-party/glm-0.9.4.6/glm/./core/type_vec2.hpp
+ ../third-party/glm-0.9.4.6/glm/./core/type_vec2.inl
+ ../third-party/glm-0.9.4.6/glm/./core/type_vec3.hpp
+ ../third-party/glm-0.9.4.6/glm/./core/type_vec3.inl
+ ../third-party/glm-0.9.4.6/glm/./core/type_vec4.hpp
+ ../third-party/glm-0.9.4.6/glm/./core/type_vec4.inl
+ ../third-party/glm-0.9.4.6/glm/core/_fixes.hpp
+ ../third-party/glm-0.9.4.6/glm/core/setup.hpp
+ ../third-party/glm-0.9.4.6/glm/glm.hpp
+ ../third-party/glm-0.9.4.6/glm/gtc/../glm.hpp
+ ../third-party/glm-0.9.4.6/glm/gtc/../gtc/../gtc/constants.hpp
+ ../third-party/glm-0.9.4.6/glm/gtc/../gtc/../gtc/constants.inl
+ ../third-party/glm-0.9.4.6/glm/gtc/../gtc/half_float.hpp
+ ../third-party/glm-0.9.4.6/glm/gtc/../gtc/half_float.inl
+ ../third-party/glm-0.9.4.6/glm/gtc/../gtc/quaternion.hpp
+ ../third-party/glm-0.9.4.6/glm/gtc/../gtc/quaternion.inl
+ ../third-party/glm-0.9.4.6/glm/gtc/type_ptr.hpp
+ ../third-party/glm-0.9.4.6/glm/gtc/type_ptr.inl
+ /home/florent/workspace/moteur_physique/src/renderer/GLtools.hpp
+ /home/florent/workspace/moteur_physique/src/renderer/Renderer3D.cpp
+ /home/florent/workspace/moteur_physique/src/renderer/Renderer3D.hpp
 CMakeFiles/Flag.dir/src/renderer/WindowManager.cpp.o
  ../third-party/glew-1.10.0/include/GL/glew.h
- /home/jojo/Documents/MoteurPhysique/src/renderer/WindowManager.cpp
- /home/jojo/Documents/MoteurPhysique/src/renderer/WindowManager.hpp
+ /home/florent/workspace/moteur_physique/src/renderer/WindowManager.cpp
+ /home/florent/workspace/moteur_physique/src/renderer/WindowManager.hpp
