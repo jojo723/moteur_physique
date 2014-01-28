@@ -35,11 +35,14 @@ CMAKE_COMMAND = /usr/bin/cmake
 # The command to remove a file.
 RM = /usr/bin/cmake -E remove -f
 
+# Escaping for special characters.
+EQUALS = =
+
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/florent/workspace/moteur_physique
+CMAKE_SOURCE_DIR = /home/jojo/Documents/MoteurPhysique
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/florent/workspace/moteur_physique/build
+CMAKE_BINARY_DIR = /home/jojo/Documents/MoteurPhysique/build
 
 #=============================================================================
 # Targets provided globally by CMake.
@@ -66,9 +69,9 @@ rebuild_cache/fast: rebuild_cache
 
 # The main all target
 all: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/florent/workspace/moteur_physique/build/CMakeFiles /home/florent/workspace/moteur_physique/build/CMakeFiles/progress.marks
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/jojo/Documents/MoteurPhysique/build/CMakeFiles /home/jojo/Documents/MoteurPhysique/build/CMakeFiles/progress.marks
 	$(MAKE) -f CMakeFiles/Makefile2 all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/florent/workspace/moteur_physique/build/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/jojo/Documents/MoteurPhysique/build/CMakeFiles 0
 .PHONY : all
 
 # The main clean target
@@ -145,30 +148,6 @@ src/main.cpp.s:
 	$(MAKE) -f CMakeFiles/Flag.dir/build.make CMakeFiles/Flag.dir/src/main.cpp.s
 .PHONY : src/main.cpp.s
 
-src/renderer/Ball.o: src/renderer/Ball.cpp.o
-.PHONY : src/renderer/Ball.o
-
-# target to build an object file
-src/renderer/Ball.cpp.o:
-	$(MAKE) -f CMakeFiles/Flag.dir/build.make CMakeFiles/Flag.dir/src/renderer/Ball.cpp.o
-.PHONY : src/renderer/Ball.cpp.o
-
-src/renderer/Ball.i: src/renderer/Ball.cpp.i
-.PHONY : src/renderer/Ball.i
-
-# target to preprocess a source file
-src/renderer/Ball.cpp.i:
-	$(MAKE) -f CMakeFiles/Flag.dir/build.make CMakeFiles/Flag.dir/src/renderer/Ball.cpp.i
-.PHONY : src/renderer/Ball.cpp.i
-
-src/renderer/Ball.s: src/renderer/Ball.cpp.s
-.PHONY : src/renderer/Ball.s
-
-# target to generate assembly for a file
-src/renderer/Ball.cpp.s:
-	$(MAKE) -f CMakeFiles/Flag.dir/build.make CMakeFiles/Flag.dir/src/renderer/Ball.cpp.s
-.PHONY : src/renderer/Ball.cpp.s
-
 src/renderer/BallRenderer3D.o: src/renderer/BallRenderer3D.cpp.o
 .PHONY : src/renderer/BallRenderer3D.o
 
@@ -241,30 +220,6 @@ src/renderer/ParticleRenderer2D.cpp.s:
 	$(MAKE) -f CMakeFiles/Flag.dir/build.make CMakeFiles/Flag.dir/src/renderer/ParticleRenderer2D.cpp.s
 .PHONY : src/renderer/ParticleRenderer2D.cpp.s
 
-src/renderer/Renderer3D.o: src/renderer/Renderer3D.cpp.o
-.PHONY : src/renderer/Renderer3D.o
-
-# target to build an object file
-src/renderer/Renderer3D.cpp.o:
-	$(MAKE) -f CMakeFiles/Flag.dir/build.make CMakeFiles/Flag.dir/src/renderer/Renderer3D.cpp.o
-.PHONY : src/renderer/Renderer3D.cpp.o
-
-src/renderer/Renderer3D.i: src/renderer/Renderer3D.cpp.i
-.PHONY : src/renderer/Renderer3D.i
-
-# target to preprocess a source file
-src/renderer/Renderer3D.cpp.i:
-	$(MAKE) -f CMakeFiles/Flag.dir/build.make CMakeFiles/Flag.dir/src/renderer/Renderer3D.cpp.i
-.PHONY : src/renderer/Renderer3D.cpp.i
-
-src/renderer/Renderer3D.s: src/renderer/Renderer3D.cpp.s
-.PHONY : src/renderer/Renderer3D.s
-
-# target to generate assembly for a file
-src/renderer/Renderer3D.cpp.s:
-	$(MAKE) -f CMakeFiles/Flag.dir/build.make CMakeFiles/Flag.dir/src/renderer/Renderer3D.cpp.s
-.PHONY : src/renderer/Renderer3D.cpp.s
-
 src/renderer/WindowManager.o: src/renderer/WindowManager.cpp.o
 .PHONY : src/renderer/WindowManager.o
 
@@ -302,9 +257,6 @@ help:
 	@echo "... src/main.o"
 	@echo "... src/main.i"
 	@echo "... src/main.s"
-	@echo "... src/renderer/Ball.o"
-	@echo "... src/renderer/Ball.i"
-	@echo "... src/renderer/Ball.s"
 	@echo "... src/renderer/BallRenderer3D.o"
 	@echo "... src/renderer/BallRenderer3D.i"
 	@echo "... src/renderer/BallRenderer3D.s"
@@ -314,9 +266,6 @@ help:
 	@echo "... src/renderer/ParticleRenderer2D.o"
 	@echo "... src/renderer/ParticleRenderer2D.i"
 	@echo "... src/renderer/ParticleRenderer2D.s"
-	@echo "... src/renderer/Renderer3D.o"
-	@echo "... src/renderer/Renderer3D.i"
-	@echo "... src/renderer/Renderer3D.s"
 	@echo "... src/renderer/WindowManager.o"
 	@echo "... src/renderer/WindowManager.i"
 	@echo "... src/renderer/WindowManager.s"

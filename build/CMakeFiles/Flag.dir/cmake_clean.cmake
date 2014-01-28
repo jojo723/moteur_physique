@@ -1,9 +1,7 @@
 FILE(REMOVE_RECURSE
   "CMakeFiles/Flag.dir/src/main.cpp.o"
   "CMakeFiles/Flag.dir/src/renderer/ParticleRenderer2D.cpp.o"
-  "CMakeFiles/Flag.dir/src/renderer/Renderer3D.cpp.o"
   "CMakeFiles/Flag.dir/src/renderer/BallRenderer3D.cpp.o"
-  "CMakeFiles/Flag.dir/src/renderer/Ball.cpp.o"
   "CMakeFiles/Flag.dir/src/renderer/WindowManager.cpp.o"
   "CMakeFiles/Flag.dir/src/renderer/GLtools.cpp.o"
   "Flag.pdb"

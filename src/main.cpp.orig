@@ -8,6 +8,7 @@
 #include "renderer/WindowManager.hpp"
 #include "renderer/BallRenderer3D.hpp"
 #include "renderer/TrackballCamera.hpp"
+#include "renderer/Ball.hpp"
 
 #include <vector>
 
@@ -17,6 +18,7 @@ static const Uint32 WINDOW_HEIGHT = 768;
 using namespace imac3;
 
 
+<<<<<<< HEAD
 //////////////////////////////////////////////////////////////////
 //                          BOF UTILS                           //
 //////////////////////////////////////////////////////////////////
@@ -50,7 +52,33 @@ struct ParticleState{
 //////////////////////////////////////////////////////////////////
 //                      BOF STRUCT BALL                         //
 //////////////////////////////////////////////////////////////////
-
+//|
+//| Structure permettant de simuler un drapeau à l'aide un système masse-ressort
+//|
+/*struct Cube{
+	std::vector<glm::vec3> positionArray;
+    std::vector<glm::vec3> velocityArray;
+    std::vector<float> massArray;
+    std::vector<glm::vec3> forceArray;
+    
+    glm::vec3 origin=glm::vec3(0.f)
+    
+     Cube(float mass, float width, float lenght, float height) :
+    	positionArray(8), velocityArray(3),
+    	massArray(8,mass /(8), forceArray( 8,glm::vec3(0.f)){
+			
+		positionArray[0]=glm::vec3(-width/2,-lenght/2,-height/2);
+		positionArray[1]=glm::vec3(-width/2,lenght/2,-height/2);
+		positionArray[2]=glm::vec3(width/2,lenght/2,-height/2);
+		positionArray[3]=glm::vec3(width/2,-lenght/2,-height/2);
+			
+		positionArray[4]=glm::vec3(-width/2,-lenght/2,height/2);
+		positionArray[5]=glm::vec3(-width/2,lenght/2,height/2);
+		positionArray[6]=glm::vec3(width/2,lenght/2,height/2);
+		positionArray[7]=glm::vec3(width/2,-lenght/2,height/2);		
+	}
+	
+};*/
 struct Ball {
 
     // Propriétés physique des points:
@@ -60,8 +88,7 @@ struct Ball {
     std::vector<float> massArray;
     std::vector<glm::vec3> forceArray;
     static const int nbPoints = 20;
-    float m_fElasticity=1.3;
-    float radius;
+    float m_fElasticity=3;
 
     // Paramètres des forces interne de simulation
     // Longueurs à vide
@@ -89,7 +116,6 @@ struct Ball {
     	massArray( (nbPoints-1)*(2*nbPoints)+3,mass /(nbPoints-1)*(2*nbPoints)+3), forceArray( (nbPoints-1)*(2*nbPoints)+3,glm::vec3(0.f)){
 
         glm::vec3 origin(0., 0., 0.);
-        this->radius=radius;
 
         // On place le centre dans les tableaux
         positionArray[0] = origin;
@@ -139,18 +165,18 @@ struct Ball {
 		state.position=(positionArray[dx]+dt*velocityArray[dx]);
 		return state;
 	}
-	void ressort(glm::vec3 v)
+	void ressort()
 	{
-		forceArray[0]+=hookForce(K0,L0,positionArray[0],v);
+		forceArray[0]+=hookForce(K0,L0,positionArray[0],glm::vec3(0,0,-2));
 	}
     // Applique les forces internes sur chaque point du drapeau SAUF les points fixes
     void applyInternalForces(float dt) {
 		
-		/*forceArray[0]+=hookForce(K0,L0,positionArray[0],positionArray[1])+brakeForce(V0,dt,velocityArray[0],velocityArray[1]);
-		forceArray[1]+=hookForce(K0,L0,positionArray[1],positionArray[0])+brakeForce(V0,dt,velocityArray[1],velocityArray[0]);
-		forceArray[0]+=hookForce(K0,L0,positionArray[0],positionArray[2])+brakeForce(V0,dt,velocityArray[0],velocityArray[2]);
-		forceArray[2]+=hookForce(K0,L0,positionArray[2],positionArray[0])+brakeForce(V0,dt,velocityArray[2],velocityArray[0]);
-		
+		//forceArray[0]+=hookForce(K0,L0,positionArray[0],positionArray[1])+brakeForce(V0,dt,velocityArray[0],velocityArray[1]);
+		//forceArray[1]+=hookForce(K0,L0,positionArray[1],positionArray[2])+brakeForce(V0,dt,velocityArray[1],velocityArray[2]);
+		//forceArray[0]+=hookForce(K0,L0,positionArray[0],positionArray[2])+brakeForce(V0,dt,velocityArray[0],velocityArray[2]);
+		//forceArray[2]+=hookForce(K0,L0,positionArray[2],positionArray[1])+brakeForce(V0,dt,velocityArray[2],velocityArray[1]);
+		/*	
 		if(nbPoints>1)
 		for(int i=3; i<forceArray.size();++i)
 		{
@@ -205,7 +231,7 @@ struct Ball {
 			forceArray[i]+=hookForce(K3,L3,positionArray[i],positionArray[m])+brakeForce(V3,dt,velocityArray[i],velocityArray[m]);
 			forceArray[m]+=hookForce(K3,L3,positionArray[m],positionArray[i])+brakeForce(V3,dt,velocityArray[m],velocityArray[i]);		
 			
-		}*/	
+		}	*/
 		for(int i=1;i<positionArray.size();++i)
         {
 			positionArray[i]=positionArray[0]+vectorArray[i];
@@ -217,7 +243,7 @@ struct Ball {
     // Applique une force externe sur chaque point du drapeau SAUF les points fixes
     void applyExternalForce(const glm::vec3& F) {
         // TODO :
-        //forceArray[0]+=F;
+        forceArray[0]+=F;
         /*for(int i=0;i<forceArray.size();++i)
         {
 			forceArray[i]+=F;
@@ -226,66 +252,53 @@ struct Ball {
      void applyGravity(const glm::vec3& F) {
         // TODO :
         forceArray[0]+=massArray[0]*F;
-       /* for(int i=0;i<forceArray.size();++i)
+        /*for(int i=0;i<forceArray.size();++i)
         {
 			forceArray[i]+=massArray[i]*F;
 		}*/
     }
-    void rebond(float dt){		
-		ParticleState state=getNextState(0,dt);
-		glm::vec3 normal(0,0,0);
-		if(state.position.z<-3)
-		{
-			normal=glm::vec3 (0.,0.,-1.);
-		}
-		if(state.position.z>3)
-		{
-			normal=glm::vec3 (0.,0.,1.);
-		}
-		if(state.position.x<-4)
-		{
-			normal=glm::vec3 (-1.,0.,0.);
-		}
-		if(state.position.x>4)
-		{
-			normal=glm::vec3 (1.,0.,0.);
-		}
-		if(state.position.z<-3 || state.position.z>3 || state.position.x<-4 || state.position.x>4){
-			float dot=state.speed.x*(-normal.x)+state.speed.y*(-normal.y)+state.speed.z*(-normal.z);
-			dot=dot<0?dot:-dot;
-			glm::vec3 force=m_fElasticity*dot*massArray[0]/dt*normal;
-			forceArray[0]=(forceArray[0]+force);
-		}
-	}
-	void choc(Ball* ball1,float dt)
-	{
-		ParticleState state=getNextState(0,dt);
-		ParticleState state1=(*ball1).getNextState(0,dt);
-		float distance=glm::distance(state.position,state1.position);
-		//std::cout<<"distance:"<<distance<<"radius:"<<radius<<std::endl;
-		if(distance<radius+ball1->radius)
-		{
-			//std::cout<<"choc"<<std::endl;
-			glm::vec3 normal=state.position-state1.position;
-			normal=glm::normalize(normal);
-			float dot=glm::dot(state.speed,-normal);
-			dot=dot<0?dot:-dot;
-			glm::vec3 force=m_fElasticity*dot*massArray[0]/dt*normal;
-			forceArray[0]=(forceArray[0]-force);
-			(*ball1).forceArray[0]=((*ball1).forceArray[0]+force);
-			/*float dot1=state1.speed.x*(-normal.x)+state.speed.y*(-normal.y)+state.speed.z*(-normal.z);
-			dot=dot<0?dot:-dot;
-			glm::vec3 force=m_fElasticity*dot*massArray[0]/dt*normal;
-			forceArray[0]=(forceArray[0]+force);*/
-		}
-	}
+    void rebond(float dt){
+		
+			ParticleState state=getNextState(0,dt);
+			if(state.position.z<-2)
+			{
+				glm::vec3 normal(0.,0.,-1.);
+				float m_fElasticity=2;
+				float dot=state.speed.x*(-normal.x)+state.speed.y*(-normal.y)+state.speed.z*(-normal.z);
+				dot=dot<0?dot:-dot;
+				//printf("dot:%f->speed: %f,%f; normal:%f,%f \n\n",dot,state.speed.x,state.speed.y,normal.x,normal.y);
+				glm::vec3 force=m_fElasticity*dot*massArray[0]/dt*normal;
+				//printf("collide %i: next force: %f,%f, elasticity:%f,dot:%f,mass:%f,dt:%f, normal:%f%f:",i,pm.arr_force[i].x,pm.arr_force[i].y,m_fElasticity,dot,pm.arr_mass[i],m_fDt,normal.x,normal.y);
+				forceArray[0]=(forceArray[0]+force);
+				//printf(" new force: %f,%f \n\n",pm.arr_force[i].x,pm.arr_force[i].y);
+			}
+			
+			/*if(state.position.y>1)
+			{
+				glm::vec3 normal(0.,1.,0.);
+				float m_fElasticity=2;
+				float dot=state.speed.x*(-normal.x)+state.speed.y*(-normal.y);
+				//printf("dot:%f->speed: %f,%f; normal:%f,%f \n\n",dot,state.speed.x,state.speed.y,normal.x,normal.y);
+				glm::vec3 force=m_fElasticity*dot*massArray[i]/dt*normal;
+				//printf("collide %i: next force: %f,%f, elasticity:%f,dot:%f,mass:%f,dt:%f, normal:%f%f:",i,pm.arr_force[i].x,pm.arr_force[i].y,m_fElasticity,dot,pm.arr_mass[i],m_fDt,normal.x,normal.y);
+				forceArray[i]=(forceArray[i]+force);
+				//printf(" new force: %f,%f \n\n",pm.arr_force[i].x,pm.arr_force[i].y);
+			}*/
 			
 		
+	}
+
+    // Met à jour la vitesse et la position de chaque point du drapeau
+    // en utilisant un schema de type Leapfrog
     void update(float dt) {
+        // TODO
+        // Ne pas oublier de remettre les forces à 0 !
         for(int i=0;i<forceArray.size();i++)
 		{
-			velocityArray[i]=(velocityArray[i]+dt*forceArray[i]/massArray[i]);			
-			positionArray[i]=(positionArray[i]+dt*velocityArray[i]);			
+			velocityArray[i]=(velocityArray[i]+dt*forceArray[i]/massArray[i]);
+			
+			positionArray[i]=(positionArray[i]+dt*velocityArray[i]);
+			
 			forceArray[i]=glm::vec3(0,0,0);			
 		}
     }
@@ -295,6 +308,8 @@ struct Ball {
 //                      EOF STRUCT BALL                         //
 //////////////////////////////////////////////////////////////////
 
+=======
+>>>>>>> f3aad2106415caa7383fcc91c47dab59d529be95
 
 //////////////////////////////////////////////////////////////////
 //                            MAIN                              //
@@ -304,32 +319,20 @@ int main() {
     WindowManager wm(WINDOW_WIDTH, WINDOW_HEIGHT, "Newton was a Geek");
     wm.setFramerate(30);
 
-    Ball ball(200, 0.2); // Création d'une balle
-    
-    Ball ball1(100, 0.1); // Création d'une balle
-    ball1.positionArray[0]=glm::vec3(1,0,1);
-    Ball ball2(300, 0.3); // Création d'une balle
-    ball2.positionArray[0]=glm::vec3(1,0,-1);
-    Ball ball3(400, 0.4); // Création d'une balle
-    ball3.positionArray[0]=glm::vec3(-1,0,-1);
-    Ball ball4(500, 0.5); // Création d'une balle
-    ball4.positionArray[0]=glm::vec3(-1,0,1);
+<<<<<<< HEAD
+    Ball ball(100, 1); // Création d'une balle
     
     //Cube cube(10.f,5.,5.,5.);
     glm::vec3 G(0.f, 0.f, -0.01f); // Gravité
+=======
+    Ball ball(10, 100000.f, 0.2); // Création d'une balle
+    
+    //Cube cube(10.f,5.,5.,5.);
+    glm::vec3 G(0.f, -2.f, 0.f); // Gravité
+>>>>>>> f3aad2106415caa7383fcc91c47dab59d529be95
 
-    BallRenderer3D renderer(Ball::nbPoints);
+    BallRenderer3D renderer(ball);
     renderer.setProjMatrix(glm::perspective(70.f, float(WINDOW_WIDTH) / WINDOW_HEIGHT, 0.1f, 100.f));
-    renderer.daBall = 1;
-
-    BallRenderer3D renderer1(Ball::nbPoints);
-    renderer1.setProjMatrix(glm::perspective(70.f, float(WINDOW_WIDTH) / WINDOW_HEIGHT, 0.1f, 100.f));
-    BallRenderer3D renderer2(Ball::nbPoints);
-    renderer2.setProjMatrix(glm::perspective(70.f, float(WINDOW_WIDTH) / WINDOW_HEIGHT, 0.1f, 100.f));
-    BallRenderer3D renderer3(Ball::nbPoints);
-    renderer3.setProjMatrix(glm::perspective(70.f, float(WINDOW_WIDTH) / WINDOW_HEIGHT, 0.1f, 100.f));
-    BallRenderer3D renderer4(Ball::nbPoints);
-    renderer4.setProjMatrix(glm::perspective(70.f, float(WINDOW_WIDTH) / WINDOW_HEIGHT, 0.1f, 100.f));
 
     TrackballCamera camera;
     int mouseLastX, mouseLastY;
@@ -339,74 +342,24 @@ int main() {
 
 	bool done = false;
     bool wireframe = true;
-    int X, Y;
     while(!done) {
         wm.startMainLoop();
 
         // Rendu
-        renderer.clear();
-        renderer1.clear();
-        renderer2.clear();
-        renderer3.clear();
-        renderer4.clear();
+        Renderer3D::clear();
 
         renderer.setViewMatrix(camera.getViewMatrix());
-        renderer.drawGrid(ball.positionArray.data(), wireframe);
-        
-        renderer1.setViewMatrix(camera.getViewMatrix());
-        renderer1.drawGrid(ball1.positionArray.data(), wireframe);
-        renderer2.setViewMatrix(camera.getViewMatrix());
-        renderer2.drawGrid(ball2.positionArray.data(), wireframe);
-        renderer3.setViewMatrix(camera.getViewMatrix());
-        renderer3.drawGrid(ball3.positionArray.data(), wireframe);
-        renderer4.setViewMatrix(camera.getViewMatrix());
-        renderer4.drawGrid(ball4.positionArray.data(), wireframe);
-        SDL_GetMouseState(&X, &Y);
-        float x=8*(float)((float)X-(float)WINDOW_WIDTH/2.)/(float)(WINDOW_WIDTH);
-        float y=-6*(float)((float)Y-(float)WINDOW_HEIGHT/2.)/(float)(WINDOW_HEIGHT);
+        renderer.draw(wireframe);
+
         // Simulation
         if(dt > 0.f) {
-            //ball.applyGravity(G); // Applique la gravité
-            //ball.applyExternalForce(glm::sphericalRand(0.1f)); // Applique un "vent" de direction aléatoire et de force 0.1 Newtons
-            ball.applyInternalForces(dt);
-            ball1.applyInternalForces(dt);
-            ball2.applyInternalForces(dt);
-            ball3.applyInternalForces(dt);
-            ball4.applyInternalForces(dt); // Applique les forces internes
-            //ball.positionArray[0]=glm::vec3(x,0, y);
-            ball.ressort(glm::vec3(x,0, y));
+            ball.applyGravity(G); // Applique la gravité
+           // ball.applyExternalForce(glm::sphericalRand(0.1f)); // Applique un "vent" de direction aléatoire et de force 0.1 Newtons
+            ball.applyInternalForces(dt); // Applique les forces internes
+            ball.ressort();
             ball.rebond(dt);
-            ball1.rebond(dt);
-            ball2.rebond(dt);
-            ball3.rebond(dt);
-            ball4.rebond(dt);
-            ball.choc(&ball1,dt);
-            ball.choc(&ball2,dt);
-            ball.choc(&ball3,dt);
-            ball.choc(&ball4,dt);
-            ball1.choc(&ball,dt);
-            ball1.choc(&ball2,dt);
-            ball1.choc(&ball3,dt);
-            ball1.choc(&ball4,dt);
-            ball2.choc(&ball1,dt);
-            ball2.choc(&ball,dt);
-            ball2.choc(&ball3,dt);
-            ball2.choc(&ball4,dt);
-            ball3.choc(&ball1,dt);
-            ball3.choc(&ball2,dt);
-            ball3.choc(&ball,dt);
-            ball3.choc(&ball4,dt);
-            ball4.choc(&ball1,dt);
-            ball4.choc(&ball2,dt);
-            ball4.choc(&ball3,dt);
-            ball4.choc(&ball,dt);
-            ball.update(dt);            
-            ball1.update(dt);
-            ball2.update(dt);
-            ball3.update(dt);
-            ball4.update(dt);
+            ball.update(dt); // Mise à jour du système à partir des forces appliquées
         }
-        //std::cout<<"mouse:("<<X<<","<<Y<<")"<<"; position:("<<x<<","<<y<<")"<<std::endl;
 		/*std::cout<<"position:("<<ball.positionArray[0].x<<ball.positionArray[0].y<<ball.positionArray[0].z
 		<<") force: ("<<ball.forceArray[0].x<<ball.forceArray[0].y<<ball.forceArray[0].z
 		<<") vitesse: ("<<ball.velocityArray[0].x<<ball.velocityArray[0].y<<ball.velocityArray[0].z<<std::endl;*/
@@ -428,8 +381,6 @@ int main() {
                     } else if(e.button.button == SDL_BUTTON_LEFT) {
                         mouseLastX = e.button.x;
                         mouseLastY = e.button.y;
-                        
-                        
                     }
                 break;
                 case SDL_KEYDOWN:
@@ -446,19 +397,11 @@ int main() {
 					}
 					if(e.key.keysym.sym == SDLK_a)
 					{
-						ball.setElasticity(0.1);	
-						ball1.setElasticity(0.1);
-						ball2.setElasticity(0.1);
-						ball3.setElasticity(0.1);
-						ball4.setElasticity(0.1);
+						ball.setElasticity(1);	
 					}
 					if(e.key.keysym.sym == SDLK_z)
 					{
-						ball.setElasticity(-0.1);	
-						ball1.setElasticity(-0.1);
-						ball2.setElasticity(-0.1);
-						ball3.setElasticity(-0.1);
-						ball4.setElasticity(-0.1);
+						ball.setElasticity(-1);	
 					}
 					if(e.key.keysym.sym == SDLK_LEFT)
 					{
@@ -473,7 +416,8 @@ int main() {
 			}
 
 		}
-		int mouseX,mouseY;
+
+        int mouseX, mouseY;
         if(SDL_GetMouseState(&mouseX, &mouseY) & SDL_BUTTON(SDL_BUTTON_LEFT)) {
             int dX = mouseX - mouseLastX, dY = mouseY - mouseLastY;
             camera.rotateLeft(dX);
